@@ -36,6 +36,10 @@
   --ochre-border: rgba(197, 120, 42, 0.20);
   --limestone-line: rgba(245, 240, 232, 0.25);
 
+  /* Image de fond du hero — remplacer par une vraie photo de chantier
+     (villa provençale, façade ocre...). Garder un fichier optimisé <300 ko. */
+  --hero-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=70');
+
   /* Métriques */
   --topbar-h: 36px;
   --header-h: 72px;
@@ -262,6 +266,21 @@ section { padding: 96px 0; }
   padding-bottom: 90px;
   position: relative;
   overflow: hidden;
+}
+/* Photo de fond + voile calcaire pour préserver la lisibilité du texte sombre.
+   Le dégradé est plus opaque à gauche (sous le titre) et s'éclaircit à droite. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(100deg, rgba(245,240,232,0.97) 0%, rgba(245,240,232,0.86) 42%, rgba(245,240,232,0.55) 100%),
+    var(--hero-image);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
 }
 .hero::after {
   content: "";
