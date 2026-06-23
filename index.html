@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ARD Multiservices — Entreprise générale du bâtiment · Vaucluse (84)</title>
+<meta name="description" content="ARD Multiservices — Aménagement, Rénovation, Décoration. Entreprise générale du bâtiment dans le Vaucluse (84). Construction neuve, rénovation complète, gros œuvre et finitions haut de gamme. Devis gratuit." />
+<meta name="theme-color" content="#C4782A" />
+
+<!-- ============================================================
+     Google Fonts — seule dépendance externe (import CSS)
+     Playfair Display : display / titres
+     Lato : corps, labels
+============================================================ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
+
+/* ============================================================
+   1. TOKENS — Palette provençale + variables globales
+   Aucune couleur n'est codée en dur ailleurs que dans :root
+============================================================ */
+:root {
+  /* Palette (6 tokens) */
+  --limestone: #F5F0E8;  /* fond principal — calcaire/chaux */
+  --ochre:     #C4782A;  /* accent signature — ocre de Roussillon */
+  --charcoal:  #252018;  /* texte principal — anthracite chaud */
+  --stone:     #E8E0D0;  /* sections alternées — pierre calcaire */
+  --mortar:    #8C8274;  /* texte secondaire — mortier de jointure */
+  --sky:       #5B8DB8;  /* accent froid — ciel du Vaucluse */
+
+  /* Dérivés transparents (réutilisés) */
+  --limestone-96: rgba(245, 240, 232, 0.96);
+  --charcoal-60:  rgba(37, 32, 24, 0.60);
+  --limestone-60: rgba(245, 240, 232, 0.60);
+  --ochre-soft:   rgba(197, 120, 42, 0.06);
+  --ochre-border: rgba(197, 120, 42, 0.20);
+  --limestone-line: rgba(245, 240, 232, 0.25);
+
+  /* Métriques */
+  --topbar-h: 36px;
+  --header-h: 72px;
+  --maxw: 1180px;
+  --radius: 6px;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================================
+   2. RESET & BASE
+============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-h) + var(--header-h)); }
+
+body {
+  font-family: 'Lato', system-ui, sans-serif;
+  font-weight: 400;
+  color: var(--charcoal);
+  background: var(--limestone);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+ul { list-style: none; }
+
+h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; line-height: 1.1; }
+
+/* ============================================================
+   3. UTILITAIRES
+============================================================ */
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+section { padding: 96px 0; }
+
+.eyebrow {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  color: var(--ochre);
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: var(--charcoal);
+  font-size: clamp(28px, 4vw, 42px);
+  margin-bottom: 16px;
+}
+.section-title em { font-style: italic; font-weight: 400; }
+
+.section-intro {
+  font-weight: 300;
+  color: var(--mortar);
+  max-width: 560px;
+  font-size: 17px;
+  margin-bottom: 48px;
+}
+
+/* Motif tuiles rondes provençales — demi-cercles en quinconce
+   Deux rangées d'arcs 180° décalées d'une demi-tuile. */
+.tiles {
+  background-color: var(--stone);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='28' viewBox='0 0 40 28'%3E%3Cg fill='%23C4782A' fill-opacity='0.02' stroke='%23C4782A' stroke-opacity='0.05' stroke-width='0.8'%3E%3Cpath d='M0 14 A20 20 0 0 1 40 14'/%3E%3Cpath d='M-20 28 A20 20 0 0 1 20 28'/%3E%3Cpath d='M20 28 A20 20 0 0 1 60 28'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 28px;
+  background-repeat: repeat;
+}
+
+/* ============================================================
+   4. SCROLL REVEAL
+============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+.reveal.revealed { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ============================================================
+   5. BOUTONS
+============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 4px;
+  transition: transform 0.2s var(--ease), background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-primary { background: var(--ochre); color: var(--limestone); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(197,120,42,0.28); }
+.btn-ghost { background: transparent; color: var(--charcoal); border: 1.5px solid var(--charcoal); }
+.btn-ghost:hover { background: var(--charcoal); color: var(--limestone); }
+
+/* ============================================================
+   0. BANDEAU TÉLÉPHONE
+============================================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--topbar-h);
+  z-index: 1000;
+  background: var(--ochre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.topbar a {
+  color: var(--limestone);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  width: 100%;
+  text-align: center;
+}
+
+/* ============================================================
+   1. HEADER FIXE
+============================================================ */
+.header {
+  position: fixed;
+  top: var(--topbar-h); left: 0; right: 0;
+  z-index: 999;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition: background 0.3s, box-shadow 0.3s, backdrop-filter 0.3s;
+}
+.header.scrolled {
+  background: var(--limestone-96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(37,32,24,0.06);
+}
+.header .wrap { display: flex; align-items: center; justify-content: space-between; }
+
+.logo { line-height: 1; }
+.logo .logo-main {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 22px;
+  color: var(--charcoal);
+  display: block;
+  letter-spacing: 0.02em;
+}
+.logo .logo-sub {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 10px;
+  color: var(--mortar);
+  display: block;
+}
+
+.nav { display: flex; align-items: center; gap: 32px; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--mortar);
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--ochre); }
+
+.header-cta {
+  background: var(--ochre);
+  color: var(--limestone);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 9px 18px;
+  border-radius: 4px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.header-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(197,120,42,0.28); }
+
+/* Hamburger */
+.burger { display: none; flex-direction: column; gap: 5px; padding: 6px; z-index: 1001; }
+.burger span {
+  width: 26px; height: 2px; background: var(--charcoal);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.mobile-overlay {
+  position: fixed; inset: 0;
+  background: var(--limestone);
+  z-index: 1000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 28px;
+  transform: translateX(100%);
+  transition: transform 0.35s var(--ease);
+}
+.mobile-overlay.open { transform: translateX(0); }
+.mobile-overlay a { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--charcoal); }
+.mobile-overlay a:hover { color: var(--ochre); }
+.mobile-overlay .btn { margin-top: 12px; font-family: 'Lato', sans-serif; font-size: 16px; }
+
+/* ============================================================
+   2. HERO
+============================================================ */
+.hero {
+  padding-top: calc(var(--topbar-h) + var(--header-h) + 70px);
+  padding-bottom: 90px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 220px;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='28' viewBox='0 0 40 28'%3E%3Cg fill='%23C4782A' fill-opacity='0.04' stroke='%23C4782A' stroke-opacity='0.08' stroke-width='0.8'%3E%3Cpath d='M0 14 A20 20 0 0 1 40 14'/%3E%3Cpath d='M-20 28 A20 20 0 0 1 20 28'/%3E%3Cpath d='M20 28 A20 20 0 0 1 60 28'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 28px;
+  background-repeat: repeat;
+  -webkit-mask-image: linear-gradient(to top, #000, transparent);
+  mask-image: linear-gradient(to top, #000, transparent);
+}
+.hero .wrap { position: relative; z-index: 1; }
+.hero h1 {
+  font-weight: 700;
+  font-size: clamp(46px, 9vw, 96px);
+  line-height: 1.05;
+  margin: 8px 0 28px;
+  color: var(--charcoal);
+}
+.hero h1 .l2 { color: var(--ochre); }
+.hero h1 .l3 { font-weight: 400; font-style: italic; }
+.hero-sub {
+  font-weight: 300;
+  color: var(--mortar);
+  max-width: 480px;
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+.hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 36px; }
+.badges { display: flex; flex-wrap: wrap; gap: 12px; }
+.badge {
+  background: var(--stone);
+  color: var(--mortar);
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ============================================================
+   3. NOS MÉTIERS
+============================================================ */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.pillar {
+  position: relative;
+  overflow: hidden;
+  background: var(--limestone);
+  border-radius: var(--radius);
+  border-top: 4px solid var(--ochre);
+  padding: 34px 28px 30px;
+  box-shadow: 0 1px 3px rgba(37,32,24,0.04);
+}
+.pillar-letter {
+  position: absolute;
+  top: 12px; right: 16px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 1;
+  color: var(--ochre);
+  opacity: 0.08;
+  pointer-events: none;
+}
+.pillar h3 { font-size: 24px; color: var(--charcoal); margin-bottom: 12px; }
+.pillar p { font-weight: 300; color: var(--mortar); font-size: 15px; margin-bottom: 18px; }
+.pillar ul li {
+  font-size: 15px;
+  color: var(--charcoal);
+  padding-left: 22px;
+  position: relative;
+  margin-bottom: 9px;
+}
+.pillar ul li::before {
+  content: "—";
+  position: absolute; left: 0;
+  color: var(--ochre);
+  font-weight: 700;
+}
+
+/* ============================================================
+   4. RÉALISATIONS
+============================================================ */
+.gallery {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 260px 260px;
+  gap: 6px;
+}
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--stone);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='28' viewBox='0 0 40 28'%3E%3Cg fill='%23C4782A' fill-opacity='0.03' stroke='%23C4782A' stroke-opacity='0.07' stroke-width='0.8'%3E%3Cpath d='M0 14 A20 20 0 0 1 40 14'/%3E%3Cpath d='M-20 28 A20 20 0 0 1 20 28'/%3E%3Cpath d='M20 28 A20 20 0 0 1 60 28'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 40px 28px;
+  display: flex;
+  align-items: flex-end;
+}
+.gallery-item:first-child { grid-row: 1 / 3; }
+.gallery-label {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--mortar);
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.3s;
+}
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--charcoal-60);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.gallery-overlay span {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--limestone);
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+.gallery-item:hover .gallery-label { opacity: 0; }
+
+.gallery-cta { margin-top: 36px; }
+.gallery-cta a { font-weight: 700; color: var(--ochre); font-size: 16px; }
+.gallery-cta a:hover { text-decoration: underline; }
+
+/* ============================================================
+   5. PROCESSUS
+============================================================ */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.step { position: relative; }
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--ochre);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.step h3 { font-size: 20px; color: var(--charcoal); margin-bottom: 10px; }
+.step p { font-weight: 300; color: var(--mortar); font-size: 15px; }
+
+/* ============================================================
+   6. TÉMOIGNAGES
+============================================================ */
+.testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.testimonial {
+  background: var(--stone);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--ochre);
+  padding: 28px 26px;
+}
+.testimonial p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--charcoal);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.testimonial .author { font-weight: 700; font-size: 14px; color: var(--charcoal); }
+.testimonial .stars { color: var(--ochre); font-size: 14px; letter-spacing: 2px; }
+
+/* ============================================================
+   7. CONTACT
+============================================================ */
+.contact { background: var(--charcoal); }
+.contact .eyebrow { color: var(--ochre); }
+.contact .section-title { color: var(--limestone); }
+.contact-sub { color: var(--limestone-60); font-weight: 300; margin-bottom: 44px; font-size: 17px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+
+.contact-left {
+  background: var(--ochre-soft);
+  border: 1px solid var(--ochre-border);
+  border-radius: 4px;
+  padding: 28px;
+}
+.contact-left .big-call {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  background: var(--ochre);
+  color: var(--limestone);
+  width: 100%;
+  font-weight: 700;
+  font-size: 22px;
+  padding: 18px;
+  border-radius: 4px;
+  margin-bottom: 22px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.contact-left .big-call:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(197,120,42,0.3); }
+.contact-info { color: var(--limestone); }
+.contact-info p { margin-bottom: 12px; font-size: 15px; font-weight: 300; }
+.contact-info a { color: var(--ochre); font-weight: 700; }
+.contact-info a:hover { text-decoration: underline; }
+
+/* Formulaire */
+.contact-form { display: grid; gap: 22px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.field label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--limestone-60);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  color: var(--limestone);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--limestone-line);
+  padding: 12px 0;
+  transition: border-color 0.25s;
+}
+.field textarea { resize: vertical; min-height: 90px; }
+.field input:focus,
+.field select:focus,
+.field textarea:focus { outline: none; border-bottom-color: var(--ochre); }
+.field select option { color: var(--charcoal); }
+.field input::placeholder, .field textarea::placeholder { color: var(--mortar); }
+.contact-form .btn-primary { width: 100%; margin-top: 4px; }
+
+/* ============================================================
+   8. FOOTER
+============================================================ */
+.footer {
+  background: var(--stone);
+  border-top: 2px solid var(--ochre);
+  padding: 54px 0 36px;
+  text-align: center;
+}
+.footer .f-logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 24px; color: var(--charcoal); text-transform: uppercase; letter-spacing: 0.04em; }
+.footer .f-tag { color: var(--mortar); font-weight: 400; margin: 6px 0 18px; letter-spacing: 0.04em; }
+.footer .f-row { margin-bottom: 8px; font-size: 15px; }
+.footer .f-row a { color: var(--ochre); font-weight: 700; }
+.footer .f-row a:hover { text-decoration: underline; }
+.footer .f-meta { color: var(--mortar); font-size: 14px; margin-top: 18px; }
+.footer .f-credit { color: var(--mortar); font-size: 12px; margin-top: 6px; opacity: 0.8; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1024px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .pillars { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .testimonials { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  section { padding: 72px 0; }
+  .nav-links, .header-cta { display: none; }
+  .burger { display: flex; }
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+  }
+  .gallery-item { grid-row: auto !important; min-height: 180px; }
+  .gallery-item:first-child { grid-column: 1 / 3; }
+}
+@media (max-width: 480px) {
+  .wrap { padding: 0 18px; }
+  .steps { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .hero-cta .btn { width: 100%; }
+  .gallery { grid-template-columns: 1fr; }
+  .gallery-item:first-child { grid-column: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 0. BANDEAU TÉLÉPHONE ============ -->
+<div class="topbar">
+  <a href="tel:0782636491" aria-label="Appeler ARD Multiservices au 07 82 63 64 91">
+    📞 ARD Multiservices · 07 82 63 64 91 · Vaucluse (84)
+  </a>
+</div>
+
+<!-- ============ 1. HEADER FIXE ============ -->
+<header class="header" id="header">
+  <div class="wrap">
+    <a href="#hero" class="logo" aria-label="ARD Multiservices — accueil">
+      <span class="logo-main">ARD</span>
+      <span class="logo-sub">Multiservices</span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <ul class="nav-links">
+        <li><a href="#metiers">Nos métiers</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="tel:0782636491" class="header-cta">📞 07 82 63 64 91</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Overlay mobile -->
+<div class="mobile-overlay" id="mobileOverlay">
+  <a href="#metiers">Nos métiers</a>
+  <a href="#realisations">Réalisations</a>
+  <a href="#apropos">À propos</a>
+  <a href="#contact">Contact</a>
+  <a href="tel:0782636491" class="btn btn-primary">📞 07 82 63 64 91</a>
+</div>
+
+<main>
+
+<!-- ============ 2. HERO ============ -->
+<section class="hero" id="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal">Entreprise générale du bâtiment · Vaucluse (84)</span>
+    <h1 class="reveal">
+      Aménagement.<br>
+      <span class="l2">Rénovation.</span><br>
+      <span class="l3">Décoration.</span>
+    </h1>
+    <p class="hero-sub reveal">
+      Entreprise générale du bâtiment dans le Vaucluse. Construction neuve,
+      rénovation complète et aménagement intérieur — du gros œuvre aux finitions.
+    </p>
+    <div class="hero-cta reveal">
+      <a href="tel:0782636491" class="btn btn-primary">📞 Appeler maintenant</a>
+      <a href="#realisations" class="btn btn-ghost">Voir les réalisations</a>
+    </div>
+    <div class="badges reveal">
+      <span class="badge">🏗️ Neuf &amp; Rénovation</span>
+      <span class="badge">🏠 Intérieur &amp; Extérieur</span>
+      <span class="badge">📍 Vaucluse (84)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. NOS MÉTIERS ============ -->
+<section class="tiles" id="metiers">
+  <div class="wrap">
+    <span class="eyebrow reveal">Nos métiers</span>
+    <h2 class="section-title reveal">Tout le bâtiment, un seul interlocuteur.</h2>
+    <p class="section-intro reveal">
+      Les trois métiers d'ARD — Aménagement, Rénovation, Décoration — réunis
+      sous une même équipe, du premier coup de pioche à la dernière finition.
+    </p>
+
+    <div class="pillars">
+      <article class="pillar reveal">
+        <span class="pillar-letter" aria-hidden="true">A</span>
+        <h3>Aménagement</h3>
+        <p>Construction neuve et extension.</p>
+        <ul>
+          <li>Maisons individuelles en neuf</li>
+          <li>Extensions et surélévations</li>
+          <li>Gros œuvre, maçonnerie, béton</li>
+          <li>Charpente et couverture</li>
+        </ul>
+      </article>
+
+      <article class="pillar reveal">
+        <span class="pillar-letter" aria-hidden="true">R</span>
+        <h3>Rénovation</h3>
+        <p>Rénovation complète intérieure et extérieure.</p>
+        <ul>
+          <li>Rénovation de villas et mas provençaux</li>
+          <li>Ravalement de façades</li>
+          <li>Isolation et mise aux normes</li>
+          <li>Salle de bain, cuisine, parquet</li>
+        </ul>
+      </article>
+
+      <article class="pillar reveal">
+        <span class="pillar-letter" aria-hidden="true">D</span>
+        <h3>Décoration</h3>
+        <p>Conception et finitions haut de gamme.</p>
+        <ul>
+          <li>Arches décoratives et moulures (staff)</li>
+          <li>Cheminées encastrées et habillages</li>
+          <li>Carrelage, parquet, revêtements</li>
+          <li>Conception et suivi déco</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. RÉALISATIONS ============ -->
+<section id="realisations">
+  <div class="wrap">
+    <span class="eyebrow reveal">Réalisations</span>
+    <h2 class="section-title reveal"><em>Quelques chantiers en Vaucluse.</em></h2>
+    <p class="section-intro reveal">
+      Du gros œuvre d'une villa provençale aux finitions d'une cuisine
+      contemporaine — un aperçu de notre polyvalence sur le terrain.
+    </p>
+
+    <div class="gallery reveal">
+      <div class="gallery-item">
+        <span class="gallery-label">Villa provençale — Rénovation extérieure complète</span>
+        <div class="gallery-overlay"><span>Villa provençale — Rénovation extérieure complète</span></div>
+      </div>
+      <div class="gallery-item">
+        <span class="gallery-label">Cuisine contemporaine — Aménagement intérieur</span>
+        <div class="gallery-overlay"><span>Cuisine contemporaine — Aménagement intérieur</span></div>
+      </div>
+      <div class="gallery-item">
+        <span class="gallery-label">Arche &amp; parquet — Création décorative</span>
+        <div class="gallery-overlay"><span>Arche &amp; parquet — Création décorative</span></div>
+      </div>
+      <div class="gallery-item">
+        <span class="gallery-label">Cheminée encastrée — Habillage bois</span>
+        <div class="gallery-overlay"><span>Cheminée encastrée — Habillage bois</span></div>
+      </div>
+      <div class="gallery-item">
+        <span class="gallery-label">Salle de bain — Douche italienne</span>
+        <div class="gallery-overlay"><span>Salle de bain — Douche italienne</span></div>
+      </div>
+      <div class="gallery-item">
+        <span class="gallery-label">Couverture — Tuiles rondes provençales</span>
+        <div class="gallery-overlay"><span>Couverture — Tuiles rondes provençales</span></div>
+      </div>
+    </div>
+
+    <p class="gallery-cta reveal">
+      <a href="https://www.instagram.com/ardmultiservices" target="_blank" rel="noopener">
+        Voir tous nos chantiers sur Instagram →
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ 5. PROCESSUS ============ -->
+<section class="tiles" id="apropos">
+  <div class="wrap">
+    <span class="eyebrow reveal">La méthode ARD</span>
+    <h2 class="section-title reveal">Comment on travaille.</h2>
+    <p class="section-intro reveal">
+      Une entreprise de proximité : on vous rappelle vite, on tient les délais
+      et on vous laisse un chantier propre.
+    </p>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <h3>Premier contact</h3>
+        <p>Appelez-nous ou envoyez un message. On vous rappelle rapidement pour comprendre votre projet.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <h3>Visite et devis</h3>
+        <p>Déplacement sur site, évaluation des travaux et devis détaillé gratuit sous quelques jours.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <h3>Réalisation</h3>
+        <p>Notre équipe intervient dans les règles de l'art. Chantier propre, délais tenus, vous êtes informé à chaque étape.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <h3>Livraison</h3>
+        <p>Réception du chantier avec vous. Les finitions sont contrôlées, chaque détail vérifié avant remise des clés.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. TÉMOIGNAGES ============ -->
+<section id="temoignages">
+  <div class="wrap">
+    <span class="eyebrow reveal">Avis clients</span>
+    <h2 class="section-title reveal"><em>Ce qu'ils disent.</em></h2>
+
+    <div class="testimonials">
+      <figure class="testimonial reveal">
+        <p>« Villa entièrement rénovée en Vaucluse — façade, intérieur, salle de bain. Équipe sérieuse, réactive et soignée. Le résultat dépasse ce qu'on imaginait. »</p>
+        <figcaption class="author">Marie-Christine L., Apt (84) <span class="stars">★★★★★</span></figcaption>
+      </figure>
+      <figure class="testimonial reveal">
+        <p>« Cuisine ouverte créée de A à Z avec une arche et un parquet chêne. Beau travail, conseils pertinents sur les matériaux. On est ravis. »</p>
+        <figcaption class="author">Sébastien et Claire F., Pertuis (84) <span class="stars">★★★★★</span></figcaption>
+      </figure>
+      <figure class="testimonial reveal">
+        <p>« Cheminée encastrée et habillage bois dans notre salon, résultat vraiment haut de gamme. Ponctuel, propre, très bon contact. »</p>
+        <figcaption class="author">Patrick M., Cavaillon (84) <span class="stars">★★★★★</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <span class="eyebrow reveal">Contact</span>
+    <h2 class="section-title reveal"><em>Parlons de votre projet.</em></h2>
+    <p class="contact-sub reveal">Devis gratuit · Vaucluse (84)</p>
+
+    <div class="contact-grid">
+      <!-- Bloc gauche -->
+      <div class="contact-left reveal">
+        <a href="tel:0782636491" class="big-call">📞 07 82 63 64 91</a>
+        <div class="contact-info">
+          <p>📷 Instagram : <a href="https://www.instagram.com/ardmultiservices" target="_blank" rel="noopener">@ardmultiservices</a></p>
+          <p>📍 Vaucluse (84) — tout le département</p>
+          <p>🕐 On vous rappelle rapidement.</p>
+        </div>
+      </div>
+
+      <!-- Bloc droit — Formulaire -->
+      <form class="contact-form reveal" action="#" method="post">
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Prénom &amp; Nom</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+          </div>
+          <div class="field">
+            <label for="phone">Téléphone</label>
+            <input type="tel" id="phone" name="phone" placeholder="06 00 00 00 00" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="vous@exemple.fr" required>
+        </div>
+        <div class="field">
+          <label for="project">Type de projet</label>
+          <select id="project" name="project">
+            <option>Construction neuve</option>
+            <option>Rénovation complète</option>
+            <option>Aménagement intérieur</option>
+            <option>Décoration &amp; finitions</option>
+            <option>Couverture &amp; toiture</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Description du projet</label>
+          <textarea id="message" name="message" placeholder="Parlez-nous de votre chantier..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer ma demande</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 8. FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="f-logo">ARD Multiservices</div>
+    <div class="f-tag">Aménagement · Rénovation · Décoration</div>
+    <div class="f-row"><a href="tel:0782636491">07 82 63 64 91</a></div>
+    <div class="f-row"><a href="https://www.instagram.com/ardmultiservices" target="_blank" rel="noopener">@ardmultiservices</a></div>
+    <div class="f-meta">84100 · Vaucluse · Provence</div>
+    <div class="f-meta">© 2026 ARD Multiservices — Tous droits réservés</div>
+    <div class="f-credit">Site réalisé par Payment Flow</div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT — mode strict, sans dépendance, sans localStorage
+============================================================ -->
+<script>
+'use strict';
+
+(function () {
+  /* --- 1. Header : fond au scroll > 70px --- */
+  var header = document.getElementById('header');
+  function onScroll() {
+    if (window.scrollY > 70) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* --- 2. Hamburger / overlay mobile --- */
+  var burger = document.getElementById('burger');
+  var overlay = document.getElementById('mobileOverlay');
+  function toggleMenu(force) {
+    var open = typeof force === 'boolean' ? force : !overlay.classList.contains('open');
+    overlay.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  burger.addEventListener('click', function () { toggleMenu(); });
+  overlay.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () { toggleMenu(false); });
+  });
+
+  /* --- 3. Scroll reveal via IntersectionObserver (stagger) --- */
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealEls = document.querySelectorAll('.reveal');
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('revealed'); });
+  } else {
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = Number(el.getAttribute('data-delay')) || 0;
+          el.style.transitionDelay = delay + 'ms';
+          el.classList.add('revealed');
+          obs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    // Stagger 0.08s par groupe de frères révélables
+    var seen = new Map();
+    revealEls.forEach(function (el) {
+      var parent = el.parentNode;
+      var idx = seen.get(parent) || 0;
+      el.setAttribute('data-delay', String(idx * 80));
+      seen.set(parent, idx + 1);
+      io.observe(el);
+    });
+  }
+
+  /* --- 4. Scrollspy : lien actif dans la nav --- */
+  var sections = ['metiers', 'realisations', 'apropos', 'contact'];
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  function findLink(id) {
+    return navLinks.find(function (a) { return a.getAttribute('href') === '#' + id; });
+  }
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          navLinks.forEach(function (a) { a.classList.remove('active'); });
+          var active = findLink(entry.target.id);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4, rootMargin: '-20% 0px -40% 0px' });
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) spy.observe(el);
+    });
+  }
+
+  /* --- 5. Formulaire : feedback simple (action à brancher) --- */
+  var form = document.querySelector('.contact-form');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      if (form.getAttribute('action') === '#') {
+        e.preventDefault();
+        var btn = form.querySelector('button[type="submit"]');
+        var original = btn.textContent;
+        btn.textContent = 'Merci ! On vous rappelle vite ✓';
+        btn.disabled = true;
+        window.setTimeout(function () {
+          btn.textContent = original;
+          btn.disabled = false;
+          form.reset();
+        }, 3500);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>
